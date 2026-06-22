@@ -28,24 +28,11 @@ import kotlinx.serialization.Serializable
 import org.openeel.demolaunchableapp.screens.HomeScreen
 import org.openeel.demolaunchableapp.screens.LessonScreen
 import org.openeel.demolaunchableapp.ui.theme.OpenEelDemoLaunchableAppTheme
-import world.respect.lib.xapi.model.XapiActivity
-import world.respect.lib.xapi.model.XapiAgent
-import world.respect.lib.xapi.model.XapiStatement
-import world.respect.lib.xapi.model.XapiVerb
 import kotlin.collections.listOf
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        println(
-            XapiStatement(
-                actor = XapiAgent(),
-                verb = XapiVerb(id = ""),
-                `object` = XapiActivity(
-                    id = ""
-                )
-            )
-        )
         enableEdgeToEdge()
         setContent {
             OpenEelDemoLaunchableAppTheme {

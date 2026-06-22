@@ -10,7 +10,7 @@ kotlin = "2.2.10"
 composeBom = "2025.12.00"
 navigation = "2.9.8"
 
-openeel = "1.0.28b"
+openeel = "1.0.28h"
 
 
 [libraries]
@@ -32,6 +32,7 @@ androidx-compose-material3-adaptive-navigation-suite = { group = "androidx.compo
 
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 openeel-xapi-core = { group = "org.openeel.app", name = "respect-lib-xapi-core", version.ref = "openeel" }
+openeel-xapi-ipc-client = { group = "org.openeel.app", name = "respect-lib-xapi-ipc-client", version.ref = "openeel" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
