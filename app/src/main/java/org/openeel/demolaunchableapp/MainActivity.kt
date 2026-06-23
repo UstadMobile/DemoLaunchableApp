@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -52,6 +54,7 @@ data class LessonDestination(
     val actor: String? = null,
     val auth: String? = null,
     val activity_id: String? = null,
+    val xapiIpcPackage: String? = null,
 )
 
 @Serializable
@@ -103,7 +106,8 @@ fun OpenEelDemoLaunchableAppApp() {
                     val lesson: LessonDestination = backStackEntry.toRoute()
 
                     LessonScreen(
-                        modifier = Modifier.padding(innerPadding),
+                        modifier = Modifier.padding(innerPadding)
+                            .verticalScroll(rememberScrollState()),
                         lesson = lesson,
                     )
                 }
