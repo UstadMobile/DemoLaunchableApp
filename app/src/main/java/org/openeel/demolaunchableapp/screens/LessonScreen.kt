@@ -113,7 +113,7 @@ fun LessonScreen(
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(16.dp),
-            text = "Demo lesson",
+            text = "xAPI-IPC Demo",
             style = MaterialTheme.typography.headlineSmall
         )
 
