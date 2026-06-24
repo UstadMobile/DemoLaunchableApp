@@ -38,9 +38,7 @@ import world.respect.lib.xapi.model.XapiAgent
 import world.respect.lib.xapi.model.XapiResult
 import world.respect.lib.xapi.model.XapiStatement
 import world.respect.lib.xapi.model.XapiVerb
-import world.respect.xapi.ipc.client.XapiIpcMessageBridgeServiceConnectionImpl
-import world.respect.xapi.ipc.client.XapiResourceIpcClient
-import world.respect.xapi.ipc.shared.messages.XapiIpcIntent
+import world.respect.xapi.ipc.client.XapiIpcClientBuilder
 
 enum class PassFailOption(val verbId: String, val label: String, val isSuccess: Boolean) {
     PASSED(XapiVerb.ID_PASSED, "Passed", true), FAILED(XapiVerb.ID_FAILED, "Failed", false)
@@ -65,17 +63,11 @@ fun LessonScreen(
 
     val client = remember(ipcPackage, endpointUrl, auth) {
         if(ipcPackage != null && endpointUrl != null && auth != null) {
-            XapiResourceIpcClient(
-                requestSender = XapiIpcMessageBridgeServiceConnectionImpl(
-                    context = context,
-                    intent = Intent(XapiIpcIntent.ACTION_XAPI_OVER_IPC).also {
-                        it.`package` = ipcPackage
-                    }
-                ),
-                json = json,
-                endpoint = endpointUrl,
-                auth = auth,
-            )
+            XapiIpcClientBuilder(context, endpointUrl.toString())
+                .setAuth(auth)
+                .setJson(json)
+                .setIpcServicePackageName(ipcPackage)
+                .build()
         }else {
             null
         }
