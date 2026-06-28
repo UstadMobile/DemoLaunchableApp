@@ -1,14 +1,45 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     kotlin("plugin.serialization") version libs.versions.kotlin.get()
 }
 
+//As per: https://developer.android.com/studio/publish/app-signing.html#kts
+// Create a variable called keystorePropertiesFile, and initialize it to your
+// keystore.properties file, in the rootProject folder.
+val keystorePropertiesFile = System.getenv("KEYSTORE")?.let {
+    File(it)
+} ?: rootProject.file("keystore.properties")
+
+// Initialize a new Properties() object called keystoreProperties.
+val keystoreProperties = Properties()
+
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.takeIf { keystorePropertiesFile.exists() }
+    ?.load(FileInputStream(keystorePropertiesFile))
+
+
 android {
     namespace = "org.openeel.demolaunchableapp"
     compileSdk {
         version = release(37) {
             //minorApiLevel = 1
+        }
+    }
+
+    signingConfigs {
+        println("Keystore exists: ${keystorePropertiesFile.exists()}")
+        //See https://developer.android.com/build/building-cmdline#gradle_signing
+        if(keystorePropertiesFile.exists()) {
+            create("release") {
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+            }
         }
     }
 
@@ -26,6 +57,10 @@ android {
         release {
             optimization {
                 enable = false
+            }
+
+            if(keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.getByName("release")
             }
         }
     }
