@@ -1,4 +1,10 @@
 
+# Launchable App Manifest URL 
+
+Install by downloading the APK from Github Releases then use this manifest Url:
+
+https://demo.openeel.org/appmanifest.json
+
 # Command line launch
 
 ```shell
