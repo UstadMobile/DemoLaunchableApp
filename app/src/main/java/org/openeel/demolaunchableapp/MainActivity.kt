@@ -21,7 +21,7 @@ import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import org.openeel.demolaunchableapp.screens.HomeScreen
-import org.openeel.demolaunchableapp.screens.LessonScreen
+import org.openeel.demolaunchableapp.screens.LearningUnitScreen
 import org.openeel.demolaunchableapp.ui.theme.OpenEelDemoLaunchableAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,7 +41,9 @@ class MainActivity : ComponentActivity() {
 object HomeDestination
 
 @Serializable
-data class LessonDestination(
+data class LearningUnitDestination(
+    val gradeNum: String? = null,
+    val lessonNum: String? = null,
     val endpoint: String? = null,
     val actor: String? = null,
     val auth: String? = null,
@@ -68,17 +70,19 @@ fun OpenEelDemoLaunchableAppApp() {
                 HomeScreen(modifier = Modifier.padding(innerPadding))
             }
 
-            composable<LessonDestination>(
+            composable<LearningUnitDestination>(
                 deepLinks = listOf(
-                    navDeepLink<LessonDestination>(basePath = "$uri/Lesson")
+                    navDeepLink {
+                        uriPattern = "$uri/grade/{gradeNum}/learningunits/{lessonNum}/learningunit.html?endpoint={endpoint}&actor={actor}&auth={auth}&activity_id={activity_id}&xapiIpcPackage={xapiIpcPackage}"
+                    }
                 )
             ) { backStackEntry ->
-                val lesson: LessonDestination = backStackEntry.toRoute()
+                val learningUnit: LearningUnitDestination = backStackEntry.toRoute()
 
-                LessonScreen(
+                LearningUnitScreen(
                     modifier = Modifier.padding(innerPadding)
                         .verticalScroll(rememberScrollState()),
-                    lesson = lesson,
+                    learningUnit = learningUnit,
                 )
             }
 

@@ -3,5 +3,5 @@
 
 ```shell
 
-adb shell "am start -W -a android.intent.action.VIEW -d 'https://demo.openeel.org/Lesson?endpoint=abc&actor=xyz&activity_id=bad&auth=secret'"
+adb shell "am start -W -a android.intent.action.VIEW -d 'https://demo.openeel.org/grade/1/learningunits/2/learningunit.html?endpoint=abc&actor=xyz&activity_id=bad&auth=secret'"
 ```

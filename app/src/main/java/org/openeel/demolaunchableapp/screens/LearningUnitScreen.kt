@@ -1,6 +1,6 @@
 package org.openeel.demolaunchableapp.screens
 
-import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,7 +29,7 @@ import io.ktor.http.Url
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
-import org.openeel.demolaunchableapp.LessonDestination
+import org.openeel.demolaunchableapp.LearningUnitDestination
 import org.openeel.demolaunchableapp.ext.defaultItemPadding
 import org.openeel.demolaunchableapp.ext.prettyResultString
 import org.openeel.demolaunchableapp.getActivityContext
@@ -46,9 +46,9 @@ enum class PassFailOption(val verbId: String, val label: String, val isSuccess: 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LessonScreen(
+fun LearningUnitScreen(
     modifier: Modifier = Modifier,
-    lesson: LessonDestination
+    learningUnit: LearningUnitDestination
 ) {
     val context = LocalContext.current.getActivityContext()
     val json = remember {
@@ -57,9 +57,9 @@ fun LessonScreen(
         }
     }
 
-    val ipcPackage = lesson.xapiIpcPackage
-    val endpointUrl = lesson.endpoint?.let { Url(it) }
-    val auth = lesson.auth
+    val ipcPackage = learningUnit.xapiIpcPackage
+    val endpointUrl = learningUnit.endpoint?.let { Url(it) }
+    val auth = learningUnit.auth
 
     val client = remember(ipcPackage, endpointUrl, auth) {
         if(ipcPackage != null && endpointUrl != null && auth != null) {
@@ -89,11 +89,16 @@ fun LessonScreen(
 
     var selectedResult by remember { mutableStateOf(PassFailOption.PASSED) }
 
-    val actorObject = remember(lesson.actor) {
-        lesson.actor?.let { json.decodeFromString(XapiAgent.serializer(), it) }
+    val actorObject = remember(learningUnit.actor) {
+        try {
+            learningUnit.actor?.let { json.decodeFromString(XapiAgent.serializer(), it) }
+        }catch(e: Throwable) {
+            Log.w("DemoApp", "Could not parse actor: ${e.message}")
+            null
+        }
     }
 
-    val activityIdVal = lesson.activity_id
+    val activityIdVal = learningUnit.activity_id
 
     var resultStmtText: String? by remember { mutableStateOf(null) }
 
@@ -105,12 +110,15 @@ fun LessonScreen(
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(16.dp),
-            text = "xAPI-IPC Demo",
+            text = buildString {
+                learningUnit.gradeNum?.also { append("Grade $it ") }
+                learningUnit.lessonNum?.also { append("learning unit #$it") }
+            },
             style = MaterialTheme.typography.headlineSmall
         )
 
         Text(
-            text = "Activity ID = ${lesson.activity_id}",
+            text = "Activity ID = ${learningUnit.activity_id}",
             modifier = Modifier.defaultItemPadding(),
         )
         Text(
