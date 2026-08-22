@@ -84,6 +84,7 @@ kotlin {
 dependencies {
     implementation(libs.openeel.xapi.core)
     implementation(libs.openeel.xapi.ipc.client)
+    implementation(libs.openeel.lib.cache.ipc.client)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)

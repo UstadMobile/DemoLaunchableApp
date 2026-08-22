@@ -1,5 +1,6 @@
 package org.openeel.demolaunchableapp.screens
 
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +18,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,19 +28,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import io.ktor.http.Url
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
+import okhttp3.Request
 import org.openeel.demolaunchableapp.LearningUnitDestination
 import org.openeel.demolaunchableapp.ext.defaultItemPadding
 import org.openeel.demolaunchableapp.ext.prettyResultString
 import org.openeel.demolaunchableapp.getActivityContext
+import org.openeel.lib.ipc.messagebridge.ServiceConnectionMessengerProvider
+import org.openeel.libcache.ipc.client.IpcHttpClientImpl
+import org.openeel.libcache.ipc.core.HttpIpcIntent
 import world.respect.lib.xapi.model.XapiActivity
 import world.respect.lib.xapi.model.XapiAgent
 import world.respect.lib.xapi.model.XapiResult
 import world.respect.lib.xapi.model.XapiStatement
 import world.respect.lib.xapi.model.XapiVerb
 import world.respect.xapi.ipc.client.XapiIpcClientBuilder
+import world.respect.xapi.ipc.shared.messages.XapiIpcIntent
+import world.respect.xapi.ipc.shared.messages.XapiIpcKeys
 
 enum class PassFailOption(val verbId: String, val label: String, val isSuccess: Boolean) {
     PASSED(XapiVerb.ID_PASSED, "Passed", true), FAILED(XapiVerb.ID_FAILED, "Failed", false)
@@ -72,6 +82,41 @@ fun LearningUnitScreen(
             null
         }
     }
+
+    val ipcHttpClient = remember(ipcPackage) {
+        if(ipcPackage != null) {
+            IpcHttpClientImpl(
+                outgoingMessengerProvider = ServiceConnectionMessengerProvider(
+                    context = context,
+                    intent = Intent(HttpIpcIntent.ACTION_HTTP_OVER_IPC_CONNECT).also {
+                        it.`package` = ipcPackage
+                        it.putExtra(XapiIpcKeys.KEY_CLIENT_PACKAGE, context.packageName)
+                    }
+                ),
+            )
+        }else {
+            null
+        }
+    }
+
+    LaunchedEffect(ipcHttpClient) {
+        try {
+            withContext(Dispatchers.IO) {
+                Log.i("DemoHTTP", "sending")
+                ipcHttpClient?.newCall(
+                    Request.Builder().url("http://localhost:8098/").build()
+                )?.execute().also {
+                    Log.i("DemoHTTP", "executed")
+                }?.also {
+                    Log.i("DemoHTTP", "response: ${it.body.string()}")
+                }
+            }
+        }catch(e: Throwable) {
+            Log.e("DemoHTTP", "FFS", e)
+        }
+
+    }
+
 
     DisposableEffect(client) {
         onDispose {
