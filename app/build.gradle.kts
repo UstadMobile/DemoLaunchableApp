@@ -84,6 +84,7 @@ kotlin {
 dependencies {
     implementation(libs.openeel.xapi.core)
     implementation(libs.openeel.xapi.ipc.client)
+    implementation(libs.openeel.lib.http.ipc.client)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
@@ -95,6 +96,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.coil3.coil.compose)
+    implementation(libs.coil3.network.okhttp)
 
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
