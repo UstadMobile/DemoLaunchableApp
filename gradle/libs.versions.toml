@@ -10,8 +10,8 @@ kotlin = "2.4.10"
 composeBom = "2026.06.01"
 navigation = "2.9.8"
 
-openeel = "1.0.40g"
-
+openeel = "1.0.40m"
+coil3 = "3.5.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +34,9 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 openeel-xapi-core = { group = "org.openeel.app", name = "respect-lib-xapi-core", version.ref = "openeel" }
 openeel-xapi-ipc-client = { group = "org.openeel.app", name = "respect-lib-xapi-ipc-client", version.ref = "openeel" }
 openeel-lib-http-ipc-client = { group = "org.openeel.app", name = "lib-http-ipc-client", version.ref = "openeel"}
+
+coil3-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil3" }
+coil3-coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
 
 
 [plugins]

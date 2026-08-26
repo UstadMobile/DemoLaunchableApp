@@ -64,8 +64,6 @@ fun OpenEelDemoLaunchableAppApp() {
             navController = navController,
             startDestination = HomeDestination
         ) {
-            val uri = "https://demo.openeel.org"
-
             composable<HomeDestination> {
                 HomeScreen(modifier = Modifier.padding(innerPadding))
             }
@@ -73,14 +71,15 @@ fun OpenEelDemoLaunchableAppApp() {
             composable<LearningUnitDestination>(
                 deepLinks = listOf(
                     navDeepLink {
-                        uriPattern = "$uri/grade/{gradeNum}/learningunits/{lessonNum}/learningunit.html?endpoint={endpoint}&actor={actor}&auth={auth}&activity_id={activity_id}&xapiIpcPackage={xapiIpcPackage}"
+                        uriPattern = "${DemoConstants.BASE_URI}/grade/{gradeNum}/learningunits/{lessonNum}/learningunit.html?endpoint={endpoint}&actor={actor}&auth={auth}&activity_id={activity_id}&xapiIpcPackage={xapiIpcPackage}"
                     }
                 )
             ) { backStackEntry ->
                 val learningUnit: LearningUnitDestination = backStackEntry.toRoute()
 
                 LearningUnitScreen(
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier
+                        .padding(innerPadding)
                         .verticalScroll(rememberScrollState()),
                     learningUnit = learningUnit,
                 )
