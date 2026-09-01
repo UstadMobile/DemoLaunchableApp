@@ -71,7 +71,7 @@ fun OpenEelDemoLaunchableAppApp() {
             composable<LearningUnitDestination>(
                 deepLinks = listOf(
                     navDeepLink {
-                        uriPattern = "${DemoConstants.BASE_URI}/grade/{gradeNum}/learningunits/{lessonNum}/learningunit.html?endpoint={endpoint}&actor={actor}&auth={auth}&activity_id={activity_id}&xapiIpcPackage={xapiIpcPackage}"
+                        uriPattern = "${DemoConstants.BASE_URI}/{langCode}/grade/{gradeNum}/learningunits/{lessonNum}/learningunit.html?endpoint={endpoint}&actor={actor}&auth={auth}&activity_id={activity_id}&xapiIpcPackage={xapiIpcPackage}"
                     }
                 )
             ) { backStackEntry ->
