@@ -10,7 +10,7 @@ kotlin = "2.4.10"
 composeBom = "2026.06.01"
 navigation = "2.9.8"
 
-openeel = "1.0.40m"
+openeel = "1.0.41"
 coil3 = "3.5.0"
 
 [libraries]

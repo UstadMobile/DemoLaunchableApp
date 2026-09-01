@@ -20,7 +20,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         //uncomment if testing locally published versions
-        mavenLocal()
+        //mavenLocal()
         maven {
             url  = uri("https://devserver3.ustadmobile.com/maven2/")
         }
