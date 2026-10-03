@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -58,7 +59,8 @@ enum class PassFailOption(val verbId: String, val label: String, val isSuccess: 
 @Composable
 fun LearningUnitScreen(
     modifier: Modifier = Modifier,
-    learningUnit: LearningUnitDestination
+    learningUnit: LearningUnitDestination,
+    onFinish: () -> Unit = {},
 ) {
     val context = LocalContext.current.getActivityContext()
     val json = remember {
@@ -391,6 +393,13 @@ fun LearningUnitScreen(
                 modifier = Modifier.defaultItemPadding(),
                 style = MaterialTheme.typography.bodySmall
             )
+        }
+
+        Button(
+            onClick = onFinish,
+            modifier = Modifier.defaultItemPadding().fillMaxWidth()
+        ) {
+            Text("Finish")
         }
     }
 
